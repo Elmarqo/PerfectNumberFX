@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="500.0" prefWidth="600.0" styleClass="parent" stylesheets="@AppStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainScreenController">
+    <children>
+        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="70.0" spacing="20.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <HBox alignment="CENTER" onMouseClicked="#start" prefHeight="100.0" prefWidth="200.0" styleClass="buttons">
+                    <children>
+                        <FontAwesomeIconView glyphName="PLAY" size="2.1em" styleClass="glyphIcon" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" onMouseClicked="#stop" prefHeight="100.0" prefWidth="200.0" styleClass="buttons">
+                    <children>
+                        <FontAwesomeIconView glyphName="HAND_STOP_ALT" size="2.1em" styleClass="glyphIcon" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" layoutX="10.0" layoutY="110.0" onMouseClicked="#showList" prefHeight="100.0" prefWidth="200.0" styleClass="buttons">
+                    <children>
+                        <FontAwesomeIconView glyphName="LIST_OL" size="2.1em" styleClass="glyphIcon" />
+                    </children>
+                </HBox>
+                <HBox fx:id="exitID" alignment="CENTER" layoutX="10.0" layoutY="210.0" onMouseClicked="#exit" prefHeight="100.0" prefWidth="200.0" styleClass="buttons">
+                    <children>
+                        <FontAwesomeIconView glyphName="POWER_OFF" size="2.1em" styleClass="glyphIcon" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+        <VBox alignment="TOP_CENTER" layoutX="150.0" prefHeight="500.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label fx:id="numberID" styleClass="number" textFill="#eeebeb">
+                    <VBox.margin>
+                        <Insets top="130.0" />
+                    </VBox.margin>
+                </Label>
+            <TextField fx:id="textFieldID" />
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
