@@ -8,40 +8,34 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0"
-            prefWidth="600.0" styleClass="parent" stylesheets="@AppStyle.css" xmlns="http://javafx.com/javafx/8.0.171"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ListController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" styleClass="parent" stylesheets="@AppStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ListController">
     <children>
-        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-              prefHeight="500.0" prefWidth="70.0" spacing="20.0" styleClass="sidebar">
+        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="70.0" spacing="20.0" styleClass="sidebar">
             <children>
-                <HBox alignment="CENTER" onMouseClicked="#home" prefHeight="100.0" prefWidth="200.0"
-                      styleClass="buttons">
+                <HBox alignment="CENTER" onMouseClicked="#home" prefHeight="100.0" prefWidth="200.0" styleClass="buttons">
                     <children>
-                        <FontAwesomeIconView glyphName="HOME" size="2.1em" styleClass="glyphIcon"/>
+                        <FontAwesomeIconView glyphName="HOME" size="2.1em" styleClass="glyphIcon" />
                     </children>
                 </HBox>
-                <HBox fx:id="exitID" alignment="CENTER" layoutX="10.0" layoutY="210.0" onMouseClicked="#exit"
-                      prefHeight="100.0" prefWidth="200.0" styleClass="buttons">
+                <HBox fx:id="exitID" alignment="CENTER" layoutX="10.0" layoutY="210.0" onMouseClicked="#exit" prefHeight="100.0" prefWidth="200.0" styleClass="buttons">
                     <children>
-                        <FontAwesomeIconView glyphName="POWER_OFF" size="2.1em" styleClass="glyphIcon"/>
+                        <FontAwesomeIconView glyphName="POWER_OFF" size="2.1em" styleClass="glyphIcon" />
                     </children>
                 </HBox>
             </children>
         </VBox>
-        <VBox alignment="TOP_CENTER" layoutX="150.0" prefHeight="400.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0"
-              AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="0.0">
+        <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="150.0" prefHeight="400.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Label text="Founded perfect numbers">
+                <Label text="Founded perfect numbers:">
                     <VBox.margin>
-                        <Insets top="30.0"/>
+                        <Insets top="30.0" />
                     </VBox.margin>
                 </Label>
-                <ListView prefHeight="395.0" prefWidth="300.0" style="-fx-background-color: transparent;">
-                    <VBox.margin>
-                        <Insets top="30.0"/>
-                    </VBox.margin>
-                </ListView>
+            <ListView fx:id="listID" prefHeight="412.0" prefWidth="120.0" styleClass="list-cell" stylesheets="@ListViewStyle.css">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </ListView>
             </children>
         </VBox>
     </children>
