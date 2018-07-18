@@ -33,12 +33,17 @@
     -fx-border-color: grey;
 }
 
-.number{
+.list-view{
+    -fx-text-fill: orange;
+    -fx-font-size: 24;
+}
+
+.label{
     -fx-text-fill: orange;
     -fx-font-size: 48;
 }
 
-.label{
+.label2{
     -fx-text-fill: orange;
     -fx-font-size: 24;
 }

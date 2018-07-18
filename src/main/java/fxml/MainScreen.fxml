@@ -3,8 +3,6 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -13,7 +11,7 @@
     <children>
         <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="70.0" spacing="20.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <HBox alignment="CENTER" onMouseClicked="#start" prefHeight="100.0" prefWidth="200.0" styleClass="buttons">
+                <HBox fx:id="startButton" alignment="CENTER" onMouseClicked="#start" onMouseDragged="#start" prefHeight="100.0" prefWidth="200.0" styleClass="buttons">
                     <children>
                         <FontAwesomeIconView glyphName="PLAY" size="2.1em" styleClass="glyphIcon" />
                     </children>
@@ -37,13 +35,15 @@
         </VBox>
         <VBox alignment="TOP_CENTER" layoutX="150.0" prefHeight="500.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Label fx:id="numberID" styleClass="number" textFill="#eeebeb">
+                <Label fx:id="numberID" prefHeight="60.0" textFill="#eeebeb">
                     <VBox.margin>
                         <Insets top="130.0" />
                     </VBox.margin>
                 </Label>
-            <Slider fx:id="sliderID" max="1.0E7" />
-            <TextField fx:id="textID" />
+            <Label fx:id="labelInfoPerfect" layoutX="160.0" layoutY="140.0" prefHeight="60.0" textFill="#eeebeb">
+               <graphic>
+                  <FontAwesomeIconView styleClass="glyphIcon" />
+               </graphic></Label>
             </children>
         </VBox>
     </children>

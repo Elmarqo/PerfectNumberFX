@@ -1,14 +1,12 @@
 package controllers;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import pl.mareksliwinski.Numbers;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -30,22 +28,24 @@ public class ListController {
     public void initialize() throws IOException {
         File file = new File("perfect.txt");
 
-        String line;
-        ObservableList<String> list = FXCollections.observableArrayList();
-        BufferedReader bufferedReader = null;
+        if (!file.exists())
+            System.out.println("Brak pliku " + file + " w katalogu aplikacji.");
+        else {
+            String line;
+            ObservableList<String> list = FXCollections.observableArrayList();
+            BufferedReader bufferedReader = null;
 
-        try {
-            bufferedReader = new BufferedReader(new FileReader(file));
-            while ((line = bufferedReader.readLine()) != null) {
-                list.add(df(Integer.parseInt(line)));
+            try {
+                bufferedReader = new BufferedReader(new FileReader(file));
+                while ((line = bufferedReader.readLine()) != null) {
+                    list.add(df(Integer.parseInt(line)));
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-
+            bufferedReader.close();
+            listID.setItems(list);
         }
-        bufferedReader.close();
-        listID.setItems(list);
     }
 
     @FXML
