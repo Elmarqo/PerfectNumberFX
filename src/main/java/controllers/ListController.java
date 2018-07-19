@@ -15,7 +15,8 @@ import java.text.DecimalFormat;
 public class ListController {
 
     private StackPaneController stackPaneController;
-    //private PerfectData perfectData;
+    private MainScreenController mainScreenController;
+
 
     public void setStackPaneController(StackPaneController stackPaneController) {
         this.stackPaneController = stackPaneController;
@@ -56,6 +57,7 @@ public class ListController {
     @FXML
     public void exit() {
         Platform.exit();
+        System.exit(0);
     }
 
     public String df(int number){

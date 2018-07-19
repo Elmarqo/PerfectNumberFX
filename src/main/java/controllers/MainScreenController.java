@@ -1,38 +1,27 @@
 package controllers;
 
-
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.application.Platform;
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleLongProperty;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
-import javafx.scene.input.MouseEvent;
-
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.text.DecimalFormat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MainScreenController {
 
 
+    public static final int LIMIT_VALUE = 999999999;
     private StackPaneController stackPaneController;
 
     public void setStackPaneController(StackPaneController stackPaneController) {
@@ -40,7 +29,7 @@ public class MainScreenController {
     }
 
     @FXML
-    private Label numberID;
+    private Label numberLabel;
 
     @FXML
     public HBox startButton;
@@ -49,15 +38,25 @@ public class MainScreenController {
     public Label labelInfoPerfect;
 
     @FXML
-    public void start(MouseEvent event) {
+    public FontAwesomeIconView bell;
+
+    @FXML
+    public Label dummyLabel;
+
+    @FXML
+    public void start() {
 
         StringProperty value = new SimpleStringProperty();
         StringProperty perfectValue = new SimpleStringProperty();
-        numberID.textProperty().bind(value);
+        StringProperty dummyNumber = new SimpleStringProperty();
+        numberLabel.textProperty().bind(value);
         labelInfoPerfect.textProperty().bind(perfectValue);
+        bell.visibleProperty().bind(perfectValue.isNotEmpty());
+        dummyLabel.textProperty().bind(dummyNumber);
+
         int number;
         String line;
-        List<Integer> startend = new ArrayList();
+        List<Integer> startend = new ArrayList<>();
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(new File("startend.txt")))) {
 
@@ -72,54 +71,79 @@ public class MainScreenController {
         int start = startend.get(0);
         int limit = startend.get(1);
 
-        startButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        Task<Integer> task = new Task<Integer>() {
+            int perfVal = 0;
+            int dummyVal = 0;
+
             @Override
-            public void handle(MouseEvent event) {
-                Task<Integer> task = new Task<Integer>() {
-                    @Override
-                    protected Integer call() throws Exception {
-                        int i;
-                        for (i = start; i < limit; i++) {
-                            final int val = i;
-                            final int perfVal = i;
-                            if (i % 2 == 0) {
-                                int sum = 0;
-                                for (int j = 1; j <= i / 2; j++) {
-                                    if (i % j == 0)
-                                        sum += j;
-                                }
-                                if (sum % i == 0)
-                                    System.out.println("Perfect number: " + i);
-                            }
-                            try {
-                                Thread.sleep(500);
-                            } catch (InterruptedException e) {
-                            }
-                            // Update the GUI on the JavaFX Application Thread
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    value.setValue(df(val));
-                                    //perfectValue.setValue("Perfect number:" + df(perfVal));
-                                }
-                            });
+            protected Integer call() throws Exception {
+                int i;
+                for (i = start; i < limit; i++) {
+                    final int val = i;
+                    dummyVal = i;
+                    if (i % 2 == 0) {
+                        int sum = 0;
+                        for (int j = 1; j <= i / 2; j++) {
+                            if (i % j == 0)
+                                sum += j;
                         }
-                        return i;
+                        if (sum % i == 0) {
+                            System.out.println("Perfect number: " + i);
+                            perfVal = i;
+
+                        }
                     }
-                };
-                Thread thread = new Thread(task);
-                thread.setDaemon(true);
-                thread.start();
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                    }
+                    // Update the GUI on the JavaFX Application Thread
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            value.setValue(df(val));
+                            dummyNumber.setValue(String.valueOf(dummyVal));
+                            if (perfVal != 0)
+                                perfectValue.setValue(df(perfVal));
+                        }
+                    });
+                }
+                return i;
             }
-        });
+        };
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     @FXML
     public void stop() {
+/*        Platform.exit();
+        StringProperty info = new SimpleStringProperty();
+        Platform.runLater(new Runnable() {
+            final String information = "STOP";
+
+            @Override
+            public void run() {
+                info.setValue(information);
+            }
+        });
+        numberLabel.textProperty().bind(info);*/
     }
 
     @FXML
     public void showList() {
+
+        if (!dummyLabel.getText().equals("Label")){
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File("startend.txt")))) {
+                bufferedWriter.write(dummyLabel.getText() + "\n");
+                bufferedWriter.write(String.valueOf(LIMIT_VALUE));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/List.fxml"));
         AnchorPane anchorPane = null;
 
@@ -135,11 +159,24 @@ public class MainScreenController {
 
     @FXML
     public void exit() {
+        if (!dummyLabel.getText().equals("Label")){
+            char separator = 13;
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("startend.txt"))) {
+                bufferedWriter.write(dummyLabel.getText() + separator);
+                bufferedWriter.write(String.valueOf(LIMIT_VALUE));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         Platform.exit();
+        System.exit(0);
     }
 
     @FXML
     public void initialize() {
+        bell.visibleProperty().setValue(false);
+        dummyLabel.visibleProperty().setValue(false);
     }
 
     public String df(long number) {

@@ -33,17 +33,16 @@
     -fx-border-color: grey;
 }
 
-.list-view{
-    -fx-text-fill: orange;
-    -fx-font-size: 24;
-}
-
 .label{
     -fx-text-fill: orange;
     -fx-font-size: 48;
 }
 
-.label2{
+.perfLabel{
     -fx-text-fill: orange;
-    -fx-font-size: 24;
+    -fx-font-size: 40;
+}
+
+#listBell{
+    -fx-fill: green;
 }

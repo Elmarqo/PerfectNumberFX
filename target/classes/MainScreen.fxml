@@ -35,16 +35,25 @@
         </VBox>
         <VBox alignment="TOP_CENTER" layoutX="150.0" prefHeight="500.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Label fx:id="numberID" prefHeight="60.0" textFill="#eeebeb">
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <Label fx:id="numberLabel" prefHeight="60.0" textFill="#eeebeb" />
+                    </children>
                     <VBox.margin>
-                        <Insets top="130.0" />
+                        <Insets top="75.0" />
                     </VBox.margin>
-                </Label>
-            <Label fx:id="labelInfoPerfect" layoutX="160.0" layoutY="140.0" prefHeight="60.0" textFill="#eeebeb">
-               <graphic>
-                  <FontAwesomeIconView styleClass="glyphIcon" />
-               </graphic></Label>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                    <children>
+                        <FontAwesomeIconView id="listBell" fx:id="bell" glyphName="BELL_ALT" size="2.1em" />
+                        <Label fx:id="labelInfoPerfect" prefHeight="60.0" styleClass="perfLabel" textFill="#eeebeb" />
+                    </children>
+                    <VBox.margin>
+                        <Insets top="40.0" />
+                    </VBox.margin>
+                </HBox>
             </children>
         </VBox>
+      <Label fx:id="dummyLabel" layoutX="511.0" layoutY="359.0" prefHeight="10.0" prefWidth="10.0" text="Label" />
     </children>
 </AnchorPane>
