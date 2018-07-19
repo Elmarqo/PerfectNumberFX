@@ -16,11 +16,6 @@
                         <FontAwesomeIconView glyphName="PLAY" size="2.1em" styleClass="glyphIcon" />
                     </children>
                 </HBox>
-                <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" onMouseClicked="#stop" prefHeight="100.0" prefWidth="200.0" styleClass="buttons">
-                    <children>
-                        <FontAwesomeIconView glyphName="HAND_STOP_ALT" size="2.1em" styleClass="glyphIcon" />
-                    </children>
-                </HBox>
                 <HBox alignment="CENTER" layoutX="10.0" layoutY="110.0" onMouseClicked="#showList" prefHeight="100.0" prefWidth="200.0" styleClass="buttons">
                     <children>
                         <FontAwesomeIconView glyphName="LIST_OL" size="2.1em" styleClass="glyphIcon" />

@@ -1,6 +1,7 @@
 package controllers;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import dialogs.DialogsTools;
 import javafx.application.Platform;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -8,6 +9,7 @@ import javafx.beans.property.StringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -17,6 +19,7 @@ import java.text.DecimalFormat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MainScreenController {
 
@@ -90,7 +93,7 @@ public class MainScreenController {
                         if (sum % i == 0) {
                             System.out.println("Perfect number: " + i);
                             perfVal = i;
-
+                            writePerfectNumber(i);
                         }
                     }
                     try {
@@ -115,27 +118,13 @@ public class MainScreenController {
         Thread thread = new Thread(task);
         thread.setDaemon(true);
         thread.start();
-    }
 
-    @FXML
-    public void stop() {
-/*        Platform.exit();
-        StringProperty info = new SimpleStringProperty();
-        Platform.runLater(new Runnable() {
-            final String information = "STOP";
-
-            @Override
-            public void run() {
-                info.setValue(information);
-            }
-        });
-        numberLabel.textProperty().bind(info);*/
     }
 
     @FXML
     public void showList() {
 
-        if (!dummyLabel.getText().equals("Label")){
+        if (!dummyLabel.getText().equals("Label")) {
             try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File("startend.txt")))) {
                 bufferedWriter.write(dummyLabel.getText() + "\n");
                 bufferedWriter.write(String.valueOf(LIMIT_VALUE));
@@ -159,18 +148,22 @@ public class MainScreenController {
 
     @FXML
     public void exit() {
-        if (!dummyLabel.getText().equals("Label")){
-            char separator = 13;
-            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("startend.txt"))) {
-                bufferedWriter.write(dummyLabel.getText() + separator);
-                bufferedWriter.write(String.valueOf(LIMIT_VALUE));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
 
-        Platform.exit();
-        System.exit(0);
+        Optional<ButtonType> result = DialogsTools.exitDialog();
+        if (result.get() == ButtonType.OK) {
+            if (!dummyLabel.getText().equals("Label")) {
+                char separator = 13;
+                try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("startend.txt"))) {
+                    bufferedWriter.write(dummyLabel.getText() + separator);
+                    bufferedWriter.write(String.valueOf(LIMIT_VALUE));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            Platform.exit();
+            System.exit(0);
+        }
     }
 
     @FXML
@@ -182,5 +175,16 @@ public class MainScreenController {
     public String df(long number) {
         DecimalFormat decimalFormat = new DecimalFormat("###,###.###");
         return decimalFormat.format(number);
+    }
+
+    public void writePerfectNumber(int perfectNumber) {
+
+        File file = new File("perfect.txt");
+        try (FileWriter fileWriter = new FileWriter(file.getAbsoluteFile(), true)) {
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(perfectNumber + "\n");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
