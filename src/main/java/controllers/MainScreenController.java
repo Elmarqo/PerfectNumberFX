@@ -1,7 +1,7 @@
 package controllers;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import dialogs.DialogsTools;
+import pl.mareksliwinski.DialogsTools;
 import javafx.application.Platform;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -114,11 +114,9 @@ public class MainScreenController {
                 return i;
             }
         };
-
         Thread thread = new Thread(task);
         thread.setDaemon(true);
         thread.start();
-
     }
 
     @FXML
@@ -133,7 +131,7 @@ public class MainScreenController {
             }
         }
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/List.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/List.fxml"));
         AnchorPane anchorPane = null;
 
         try {
@@ -160,7 +158,6 @@ public class MainScreenController {
                     e.printStackTrace();
                 }
             }
-
             Platform.exit();
             System.exit(0);
         }

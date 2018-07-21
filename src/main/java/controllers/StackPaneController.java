@@ -18,7 +18,7 @@ public class StackPaneController {
     }
 
     public void setMainScreen() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainScreen.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainScreen.fxml"));
         AnchorPane anchorPane = null;
 
         try {
