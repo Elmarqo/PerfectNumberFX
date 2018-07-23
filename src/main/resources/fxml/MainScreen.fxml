@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -12,19 +13,31 @@
         <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="70.0" spacing="20.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <HBox fx:id="startButton" alignment="CENTER" onMouseClicked="#start" onMouseDragged="#start" prefHeight="100.0" prefWidth="200.0" styleClass="buttons">
-                    <children>
-                        <FontAwesomeIconView glyphName="PLAY" size="2.1em" styleClass="glyphIcon" />
-                    </children>
+               <children>
+                  <ImageView fitHeight="33.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/music-player-play.png" />
+                     </image>
+                  </ImageView>
+               </children>
                 </HBox>
                 <HBox alignment="CENTER" layoutX="10.0" layoutY="110.0" onMouseClicked="#showList" prefHeight="100.0" prefWidth="200.0" styleClass="buttons">
-                    <children>
-                        <FontAwesomeIconView glyphName="LIST_OL" size="2.1em" styleClass="glyphIcon" />
-                    </children>
+               <children>
+                  <ImageView fitHeight="39.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/clipboards.png" />
+                     </image>
+                  </ImageView>
+               </children>
                 </HBox>
                 <HBox fx:id="exitID" alignment="CENTER" layoutX="10.0" layoutY="210.0" onMouseClicked="#exit" prefHeight="100.0" prefWidth="200.0" styleClass="buttons">
-                    <children>
-                        <FontAwesomeIconView glyphName="POWER_OFF" size="2.1em" styleClass="glyphIcon" />
-                    </children>
+               <children>
+                  <ImageView fitHeight="33.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/power-button-off.png" />
+                     </image>
+                  </ImageView>
+               </children>
                 </HBox>
             </children>
         </VBox>
@@ -40,8 +53,14 @@
                 </HBox>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                     <children>
-                        <FontAwesomeIconView id="listBell" fx:id="bell" glyphName="BELL_ALT" size="2.1em" />
-                        <Label fx:id="labelInfoPerfect" prefHeight="60.0" styleClass="perfLabel" textFill="#eeebeb" />
+                        <Label fx:id="labelInfoPerfect" prefHeight="60.0" styleClass="perfLabel" textFill="#eeebeb">
+                     <graphic>
+                        <ImageView fx:id="bell" fitHeight="33.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/notification.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Label>
                     </children>
                     <VBox.margin>
                         <Insets top="40.0" />
@@ -49,6 +68,6 @@
                 </HBox>
             </children>
         </VBox>
-      <Label fx:id="dummyLabel" layoutX="511.0" layoutY="359.0" prefHeight="10.0" prefWidth="10.0" text="Label" />
+        <Label fx:id="dummyLabel" layoutX="511.0" layoutY="359.0" prefHeight="10.0" prefWidth="10.0" text="Label" />
     </children>
 </AnchorPane>

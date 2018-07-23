@@ -1,7 +1,6 @@
 package controllers;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import pl.mareksliwinski.DialogsTools;
+import javafx.scene.control.*;
 import javafx.application.Platform;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -9,10 +8,10 @@ import javafx.beans.property.StringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -41,10 +40,10 @@ public class MainScreenController {
     public Label labelInfoPerfect;
 
     @FXML
-    public FontAwesomeIconView bell;
+    public Label dummyLabel;
 
     @FXML
-    public Label dummyLabel;
+    private ImageView bell;
 
     @FXML
     public void start() {
@@ -61,16 +60,8 @@ public class MainScreenController {
         String line;
         List<Integer> startend = new ArrayList<>();
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(new File("startend.txt")))) {
+        fileLoader(startend);
 
-            while ((line = bufferedReader.readLine()) != null) {
-                number = Integer.parseInt(line);
-                startend.add(number);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         int start = startend.get(0);
         int limit = startend.get(1);
 
@@ -147,7 +138,12 @@ public class MainScreenController {
     @FXML
     public void exit() {
 
-        Optional<ButtonType> result = DialogsTools.exitDialog();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText("");
+        alert.setTitle("POTWIERDZENIE");
+        alert.setContentText("Czy na pewno chcesz wyjść z aplikacji?" + " Plik z ostatnim sprawdzanym numerem zostanie zapisany.");
+        Optional<ButtonType> result = alert.showAndWait();
+
         if (result.get() == ButtonType.OK) {
             if (!dummyLabel.getText().equals("Label")) {
                 char separator = 13;
@@ -174,14 +170,41 @@ public class MainScreenController {
         return decimalFormat.format(number);
     }
 
+    public void fileLoader(List<Integer> startend) {
+        String line;
+        int number;
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(new File("startend.txt")))) {
+
+            while ((line = bufferedReader.readLine()) != null) {
+                number = Integer.parseInt(line);
+                startend.add(number);
+            }
+        } catch (Exception e) {
+            loadError(e.getMessage());
+            Platform.exit();
+            System.exit(0);
+        }
+
+    }
+
     public void writePerfectNumber(int perfectNumber) {
 
         File file = new File("perfect.txt");
         try (FileWriter fileWriter = new FileWriter(file.getAbsoluteFile(), true)) {
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(perfectNumber + "\n");
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void loadError(String error) {
+        Alert readError = new Alert(Alert.AlertType.ERROR);
+        readError.setTitle("BŁĄD!");
+        readError.setHeaderText("Coś poszło nie tak!");
+        TextArea textArea = new TextArea(error);
+        textArea.setPrefHeight(100);
+        readError.getDialogPane().setContent(textArea);
+        readError.showAndWait();
     }
 }

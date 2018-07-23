@@ -14,8 +14,8 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/StackPane.fxml"));
-        Pane Pane = loader.load();
-        Scene scene = new Scene(Pane);
+        Pane pane = loader.load();
+        Scene scene = new Scene(pane);
         primaryStage.setTitle("Perfect Numbers");
         primaryStage.setScene(scene);
         primaryStage.show();
