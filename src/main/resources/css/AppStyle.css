@@ -15,6 +15,16 @@
     -fx-border-color: orange;
     -fx-border-style: solid;
     -fx-border-width: 0px 3px 0px 0px;
+
+}
+
+#powerOFFButton {
+    -fx-background-color: transparent;
+}
+
+#powerOFFButton:hover {
+    -fx-background-color: #9E111A;
+    -fx-border-style: solid;
 }
 
 .glyphIcon {
@@ -28,21 +38,35 @@
     -fx-border-width: 0px 0px 0px 3px;
 }
 
-.roundedLabel{
+.roundedLabel {
     -fx-background-color: transparent;
     -fx-border-color: grey;
 }
 
-.label{
+.label {
     -fx-text-fill: orange;
     -fx-font-size: 48;
 }
 
-.perfLabel{
+.perfLabel {
     -fx-text-fill: orange;
     -fx-font-size: 40;
 }
 
-#listBell{
+#listBell {
     -fx-fill: green;
+}
+
+.region {
+    -fx-background-color: #3F8993;
+    -fx-background-color: rgba(0,0,0,0.6);
+}
+
+#title {
+    -fx-text-fill: #2A2E37;
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+    -fx-font-family: "Verdana";
+    -fx-text-alignment: center;
+    -fx-font-size: 18;
 }

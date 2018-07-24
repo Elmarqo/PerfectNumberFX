@@ -1,5 +1,6 @@
 package controllers;
 
+import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.application.Platform;
 
@@ -8,7 +9,11 @@ import javafx.beans.property.StringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 import pl.mareksliwinski.Main;
 
 import java.io.*;
@@ -23,9 +28,13 @@ public class MainScreenController {
 
     public static final int LIMIT_VALUE = 999999999;
     private Main main;
+    private Stage primaryStage;
+    private static double xOffset = 0;
+    private static double yOffset = 0;
 
-    public void setMain(Main main) {
+    public void setMain(Main main, Stage primaryStage) {
         this.main = main;
+        this.primaryStage = primaryStage;
     }
 
     @FXML
@@ -42,6 +51,34 @@ public class MainScreenController {
 
     @FXML
     private ImageView bell;
+
+    @FXML
+    private Region region;
+
+    @FXML
+    private AnchorPane anchorPane;
+
+    @FXML
+    void mouseDragged() {
+        anchorPane.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                primaryStage.setX(event.getScreenX() + xOffset);
+                primaryStage.setY(event.getScreenY() + yOffset);
+            }
+        });
+    }
+
+    @FXML
+    void mousePressed(MouseEvent event) {
+        anchorPane.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+        xOffset = primaryStage.getX() - event.getScreenX();
+        yOffset = primaryStage.getY() - event.getScreenY();
+            }
+        });
+    }
 
     @FXML
     public void start() {

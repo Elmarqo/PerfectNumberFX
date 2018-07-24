@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -34,10 +35,12 @@ public class Main extends Application {
             e.printStackTrace();
         }
         MainScreenController mainScreenController = loader.getController();
-        mainScreenController.setMain(this);
+        mainScreenController.setMain(this, primaryStage);
 
         Scene scene = new Scene(pane);
         primaryStage.setTitle("Perfect Numbers");
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.resizableProperty().setValue(false);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -53,10 +56,12 @@ public class Main extends Application {
         }
         Scene scene = new Scene(pane);
         Stage secondaryStage = new Stage();
+        secondaryStage.initStyle(StageStyle.UNDECORATED);
 
         ListController listController = loader.getController();
         listController.setMain(this, secondaryStage);
         secondaryStage.initModality(Modality.APPLICATION_MODAL);
+        secondaryStage.resizableProperty().setValue(false);
         secondaryStage.setScene(scene);
         secondaryStage.show();
     }
