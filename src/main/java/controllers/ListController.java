@@ -5,6 +5,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.stage.Stage;
+import pl.mareksliwinski.App;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -14,7 +16,13 @@ public class ListController {
 
     private StackPaneController stackPaneController;
     private MainScreenController mainScreenController;
+    private App app;
+    private Stage stage;
 
+    public void setApp(App app, Stage stage) {
+        this.app = app;
+        this.stage = stage;
+    }
 
     public void setStackPaneController(StackPaneController stackPaneController) {
         this.stackPaneController = stackPaneController;
@@ -54,8 +62,12 @@ public class ListController {
 
     @FXML
     public void exit() {
-        Platform.exit();
-        System.exit(0);
+    app.listScreen();
+    stage.close();
+
+
+        /*Platform.exit();
+        System.exit(0);*/
     }
 
     public String df(int number){

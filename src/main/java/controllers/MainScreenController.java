@@ -1,5 +1,6 @@
 package controllers;
 
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.application.Platform;
 
@@ -11,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -56,14 +56,11 @@ public class MainScreenController {
         bell.visibleProperty().bind(perfectValue.isNotEmpty());
         dummyLabel.textProperty().bind(dummyNumber);
 
-        int number;
-        String line;
         List<Integer> startend = new ArrayList<>();
-
         fileLoader(startend);
 
         int start = startend.get(0);
-        int limit = startend.get(1);
+        //int limit = startend.get(1);
 
         Task<Integer> task = new Task<Integer>() {
             int perfVal = 0;
@@ -72,7 +69,7 @@ public class MainScreenController {
             @Override
             protected Integer call() throws Exception {
                 int i;
-                for (i = start; i < limit; i++) {
+                for (i = start; i < LIMIT_VALUE; i++) {
                     final int val = i;
                     dummyVal = i;
                     if (i % 2 == 0) {
@@ -113,14 +110,7 @@ public class MainScreenController {
     @FXML
     public void showList() {
 
-        if (!dummyLabel.getText().equals("Label")) {
-            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File("startend.txt")))) {
-                bufferedWriter.write(dummyLabel.getText() + "\n");
-                bufferedWriter.write(String.valueOf(LIMIT_VALUE));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        writeLimits();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/List.fxml"));
         AnchorPane anchorPane = null;
@@ -138,22 +128,9 @@ public class MainScreenController {
     @FXML
     public void exit() {
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setHeaderText("");
-        alert.setTitle("POTWIERDZENIE");
-        alert.setContentText("Czy na pewno chcesz wyjść z aplikacji?" + " Plik z ostatnim sprawdzanym numerem zostanie zapisany.");
-        Optional<ButtonType> result = alert.showAndWait();
-
+        Optional<ButtonType> result = alertExitButton();
         if (result.get() == ButtonType.OK) {
-            if (!dummyLabel.getText().equals("Label")) {
-                char separator = 13;
-                try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("startend.txt"))) {
-                    bufferedWriter.write(dummyLabel.getText() + separator);
-                    bufferedWriter.write(String.valueOf(LIMIT_VALUE));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            writeLimits();
             Platform.exit();
             System.exit(0);
         }
@@ -184,7 +161,6 @@ public class MainScreenController {
             Platform.exit();
             System.exit(0);
         }
-
     }
 
     public void writePerfectNumber(int perfectNumber) {
@@ -196,6 +172,25 @@ public class MainScreenController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void writeLimits() {
+        if (!dummyLabel.getText().equals("Label")) {
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File("startend.txt")))) {
+                bufferedWriter.write(dummyLabel.getText() + "\n");
+                bufferedWriter.write(String.valueOf(LIMIT_VALUE));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Optional<ButtonType> alertExitButton() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText("");
+        alert.setTitle("POTWIERDZENIE");
+        alert.setContentText("Czy na pewno chcesz wyjść z aplikacji?" + " Plik z ostatnim sprawdzanym numerem zostanie zapisany.");
+        return alert.showAndWait();
     }
 
     public void loadError(String error) {
