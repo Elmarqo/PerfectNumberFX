@@ -149,12 +149,10 @@ public class MainScreenController {
 
     public void writePerfectNumber(int perfectNumber) {
 
-        File file = new File("perfect.txt");
-        try (FileWriter fileWriter = new FileWriter(file.getAbsoluteFile(), true)) {
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File("perfect.txt").getAbsoluteFile(), true))) {
             bufferedWriter.write(perfectNumber + "\n");
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            loadError(e.getMessage());
         }
     }
 
