@@ -1,38 +1,33 @@
 package controllers;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import pl.mareksliwinski.App;
+import pl.mareksliwinski.Main;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.text.DecimalFormat;
-
 
 public class ListController {
 
-    private StackPaneController stackPaneController;
-    private MainScreenController mainScreenController;
-    private App app;
-    private Stage stage;
+    private Main main;
+    private Stage secondaryStage;
 
-    public void setApp(App app, Stage stage) {
-        this.app = app;
-        this.stage = stage;
-    }
-
-    public void setStackPaneController(StackPaneController stackPaneController) {
-        this.stackPaneController = stackPaneController;
+    public void setMain(Main main, Stage secondaryStage) {
+        this.main = main;
+        this.secondaryStage = secondaryStage;
     }
 
     @FXML
     private ListView listID;
 
     @FXML
-    public void initialize() throws IOException {
+    public void initialize() throws Exception {
         File file = new File("perfect.txt");
 
         if (!file.exists())
@@ -56,23 +51,12 @@ public class ListController {
     }
 
     @FXML
-    public void home() {
-        stackPaneController.setMainScreen();
-    }
-
-    @FXML
     public void exit() {
-    app.listScreen();
-    stage.close();
-
-
-        /*Platform.exit();
-        System.exit(0);*/
+        secondaryStage.close();
     }
 
     public String df(int number){
         DecimalFormat decimalFormat = new DecimalFormat("###,###.###");
         return decimalFormat.format(number);
     }
-
 }

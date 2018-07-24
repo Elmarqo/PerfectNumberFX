@@ -1,6 +1,5 @@
 package controllers;
 
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.application.Platform;
 
@@ -8,10 +7,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import pl.mareksliwinski.Main;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -24,10 +22,10 @@ public class MainScreenController {
 
 
     public static final int LIMIT_VALUE = 999999999;
-    private StackPaneController stackPaneController;
+    private Main main;
 
-    public void setStackPaneController(StackPaneController stackPaneController) {
-        this.stackPaneController = stackPaneController;
+    public void setMain(Main main) {
+        this.main = main;
     }
 
     @FXML
@@ -109,25 +107,11 @@ public class MainScreenController {
 
     @FXML
     public void showList() {
-
-        writeLimits();
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/List.fxml"));
-        AnchorPane anchorPane = null;
-
-        try {
-            anchorPane = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        ListController listController = loader.getController();
-        listController.setStackPaneController(stackPaneController);
-        stackPaneController.setScreen(anchorPane);
+        main.loadListScreen();
     }
 
     @FXML
     public void exit() {
-
         Optional<ButtonType> result = alertExitButton();
         if (result.get() == ButtonType.OK) {
             writeLimits();
