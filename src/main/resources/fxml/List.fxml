@@ -30,7 +30,7 @@
         </VBox>
         <VBox alignment="TOP_CENTER" fillWidth="false" layoutX="150.0" prefHeight="400.0" prefWidth="300.0" stylesheets="@../css/ListViewStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Label styleClass="labelList" stylesheets="@../css/ListViewStyle.css" text="Founded perfect numbers:">
+                <Label styleClass="labelList" stylesheets="@../css/ListViewStyle.css" text="Perfect numbers founded:">
                     <VBox.margin>
                         <Insets top="30.0" />
                     </VBox.margin>

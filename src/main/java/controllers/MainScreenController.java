@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import pl.mareksliwinski.Main;
 
 import java.io.*;
+import java.sql.*;
 import java.text.DecimalFormat;
 
 import java.util.ArrayList;
@@ -31,6 +32,11 @@ public class MainScreenController {
     private Stage primaryStage;
     private static double xOffset = 0;
     private static double yOffset = 0;
+    private Connection connection;
+
+    public Connection getConnection() {
+        return connection;
+    }
 
     public void setMain(Main main, Stage primaryStage) {
         this.main = main;
@@ -59,6 +65,9 @@ public class MainScreenController {
     private AnchorPane anchorPane;
 
     @FXML
+    private Label titleLabe;
+
+    @FXML
     void mouseDragged() {
         anchorPane.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
@@ -74,15 +83,15 @@ public class MainScreenController {
         anchorPane.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-        xOffset = primaryStage.getX() - event.getScreenX();
-        yOffset = primaryStage.getY() - event.getScreenY();
+                xOffset = primaryStage.getX() - event.getScreenX();
+                yOffset = primaryStage.getY() - event.getScreenY();
             }
         });
     }
 
     @FXML
-    public void start() {
-
+    public void start() throws SQLException {
+        connect2DB();
         StringProperty value = new SimpleStringProperty();
         StringProperty perfectValue = new SimpleStringProperty();
         StringProperty dummyNumber = new SimpleStringProperty();
@@ -91,10 +100,12 @@ public class MainScreenController {
         bell.visibleProperty().bind(perfectValue.isNotEmpty());
         dummyLabel.textProperty().bind(dummyNumber);
 
-        List<Integer> startend = new ArrayList<>();
-        fileLoader(startend);
+        //List<Integer> startend = new ArrayList<>();
+        //fileLoader(startend);
 
-        int start = startend.get(0);
+        int start = getStartNumberFromDB();
+        connection.close();
+        //int start = startend.get(0);
         //int limit = startend.get(1);
 
         Task<Integer> task = new Task<Integer>() {
@@ -114,14 +125,17 @@ public class MainScreenController {
                                 sum += j;
                         }
                         if (sum % i == 0) {
-                            System.out.println("Perfect number: " + i);
                             perfVal = i;
+                            connect2DB();
                             writePerfectNumber(i);
+                            addNewPerfectNumber2DB(i);
+                            connection.close();
                         }
                     }
                     try {
                         Thread.sleep(1);
                     } catch (InterruptedException e) {
+                        alerts(e.getMessage());
                     }
                     // Update the GUI on the JavaFX Application Thread
                     Platform.runLater(new Runnable() {
@@ -152,9 +166,24 @@ public class MainScreenController {
         Optional<ButtonType> result = alertExitButton();
         if (result.get() == ButtonType.OK) {
             writeLimits();
+            connect2DB();
+            updateLimitsInDB();
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                loadError(e.getMessage());
+            }
             Platform.exit();
             System.exit(0);
         }
+    }
+
+    @FXML
+    public void info() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Perfect NumberFX");
+        alert.setHeaderText("Perfect NumberFX ver 1.1 SQL. \n(C) Marek Śliwiński. \nIcons made by Freepik from www.flaticon.com");
+        alert.showAndWait();
     }
 
     @FXML
@@ -186,7 +215,8 @@ public class MainScreenController {
 
     public void writePerfectNumber(int perfectNumber) {
 
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File("perfect.txt").getAbsoluteFile(), true))) {
+        try (BufferedWriter bufferedWriter =
+                     new BufferedWriter(new FileWriter(new File("perfect.txt").getAbsoluteFile(), true))) {
             bufferedWriter.write(perfectNumber + "\n");
         } catch (Exception e) {
             loadError(e.getMessage());
@@ -199,7 +229,7 @@ public class MainScreenController {
                 bufferedWriter.write(dummyLabel.getText() + "\n");
                 bufferedWriter.write(String.valueOf(LIMIT_VALUE));
             } catch (IOException e) {
-                e.printStackTrace();
+                loadError(e.getMessage());
             }
         }
     }
@@ -208,7 +238,8 @@ public class MainScreenController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("");
         alert.setTitle("POTWIERDZENIE");
-        alert.setContentText("Czy na pewno chcesz wyjść z aplikacji?" + " Plik z ostatnim sprawdzanym numerem zostanie zapisany.");
+        alert.setContentText("Czy na pewno chcesz wyjść z aplikacji?" + " Plik z ostatnim sprawdzanym numerem " +
+                "zostanie zapisany.");
         return alert.showAndWait();
     }
 
@@ -220,5 +251,66 @@ public class MainScreenController {
         textArea.setPrefHeight(100);
         readError.getDialogPane().setContent(textArea);
         readError.showAndWait();
+    }
+
+    public void connect2DB() {
+        Statement statement;
+        String url = "jdbc:mysql://serwer1812074.home.pl:3306/26938208_perfect?useUnicode=true" +
+                "&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&useSSL=false&serverTimezone=UTC";
+        String userName = "26938208_perfect";
+        String password = "M@rcoV3$p3r";
+
+        try {
+            connection = DriverManager.getConnection(url, userName, password);
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            alerts(e.getMessage());
+            Platform.exit();
+            System.exit(0);
+        }
+    }
+
+    public int getStartNumberFromDB() throws SQLException {
+
+        String query = "SELECT limits.limitnumbers FROM limits WHERE limits.id = 1";
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ResultSet result = preparedStatement.executeQuery();
+        result.next();
+        String temp = result.getString("limitnumbers");
+        int start = Integer.parseInt(temp);
+
+        return start;
+    }
+
+    public void updateLimitsInDB() {
+        if (!dummyLabel.getText().isEmpty()) {
+            int zapis = Integer.parseInt(dummyLabel.getText());
+            String update = "UPDATE limits SET limitnumbers = ? WHERE id = 1";
+
+            try {
+                PreparedStatement preparedStatement = connection.prepareStatement(update);
+                preparedStatement.setInt(1, zapis);
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                alerts(e.getMessage());
+            }
+        }
+    }
+
+    public void addNewPerfectNumber2DB(int number) {
+        String add = "INSERT INTO perfectnumber.perfectnumbers VALUES (NULL, ?)";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(add);
+            preparedStatement.setInt(1, number);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void alerts(String string) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(string);
+        alert.showAndWait();
     }
 }

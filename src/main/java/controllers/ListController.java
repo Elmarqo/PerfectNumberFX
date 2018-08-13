@@ -1,5 +1,6 @@
 package controllers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -14,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.sql.*;
 import java.text.DecimalFormat;
 
 public class ListController {
@@ -22,6 +24,15 @@ public class ListController {
     private Stage secondaryStage;
     private static double xOffset = 0;
     private static double yOffset = 0;
+    private MainScreenController mainScreenController;
+
+    public void setMainScreenController() {
+        this.mainScreenController = new MainScreenController();
+    }
+
+    public MainScreenController getMainScreenController() {
+        return mainScreenController;
+    }
 
     public void setMain(Main main, Stage secondaryStage) {
         this.main = main;
@@ -57,10 +68,9 @@ public class ListController {
 
     }
 
-
     @FXML
     public void initialize() throws Exception {
-        File file = new File("perfect.txt");
+        /*File file = new File("perfect.txt");
 
         if (!file.exists())
             System.out.println("Brak pliku " + file + " w katalogu aplikacji.");
@@ -79,7 +89,32 @@ public class ListController {
             }
             bufferedReader.close();
             listID.setItems(list);
+        }*/
+        setMainScreenController();
+        ObservableList<String> list = FXCollections.observableArrayList();
+        String url = "jdbc:mysql://serwer1812074.home.pl:3306/26938208_perfect?useUnicode=true&useJDBCCompliantTimezoneShift=true" +
+                "&useLegacyDatetimeCode=false&useSSL=false&serverTimezone=UTC";
+        String userName = "26938208_perfect";
+        String password = "M@rcoV3$p3r";
+
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(url, userName, password);
+        } catch (SQLException e) {
+            getMainScreenController().alerts(e.getMessage());
+            Platform.exit();
+            System.exit(0);
         }
+        String line = "SELECT perfectnumbers from perfectnumbers";
+        PreparedStatement preparedStatement = connection.prepareStatement(line);
+        ResultSet resultSet = preparedStatement.executeQuery(line);
+        int counter = 0;
+        while (resultSet.next()) {
+            int record = resultSet.getInt("perfectnumbers");
+            list.add(df(record));
+        }
+        listID.setItems(list);
+        connection.close();
     }
 
     @FXML

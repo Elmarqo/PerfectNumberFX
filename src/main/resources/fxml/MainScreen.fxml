@@ -80,8 +80,11 @@
                 </HBox>
             </children>
         </VBox>
-        <Label fx:id="dummyLabel" layoutX="509.0" layoutY="308.0" prefHeight="10.0" prefWidth="10.0" text="Label" />
+        <Label fx:id="dummyLabel" layoutX="509.0" layoutY="308.0" prefHeight="10.0" prefWidth="10.0" />
       <Region fx:id="region" layoutX="107.0" layoutY="446.0" prefHeight="54.0" prefWidth="530.0" styleClass="region" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="446.0" />
-      <Label id="title" alignment="CENTER" layoutX="310.0" layoutY="446.0" prefHeight="54.0" prefWidth="290.0" text="Perfect Number Finder" textAlignment="CENTER" />
+      <Label id="title" fx:id="titleLabel" alignment="CENTER" layoutX="310.0" layoutY="446.0" onMouseClicked="#info" prefHeight="54.0" prefWidth="290.0" text="Perfect Number Finder" textAlignment="CENTER">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Label>
     </children>
 </AnchorPane>

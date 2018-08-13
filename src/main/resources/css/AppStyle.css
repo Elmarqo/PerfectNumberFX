@@ -23,8 +23,13 @@
 }
 
 #powerOFFButton:hover {
-    -fx-background-color: #9E111A;
+    -fx-background-color: linear-gradient(#9E111A, #FF4B34);
+    -fx-background-radius: 10€;
     -fx-border-style: solid;
+    -fx-border-color: #373E48;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 5, 0.0, 0, 1);
+
 }
 
 .glyphIcon {
@@ -59,11 +64,11 @@
 
 .region {
     -fx-background-color: #3F8993;
-    -fx-background-color: rgba(0,0,0,0.6);
+    -fx-background-color: rgba(0, 0, 0, 1.5);
 }
 
 #title {
-    -fx-text-fill: #2A2E37;
+    -fx-text-fill: #064492;
     -fx-font-weight: bold;
     -fx-font-style: italic;
     -fx-font-family: "Verdana";
